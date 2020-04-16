@@ -4,8 +4,7 @@ import createElement from '../utils/createElement';
  * Email input class component
  *
  * @emails {Array} list of initial (default) emails
- * @el {Drupal~behaviorDetach} detach
- *   Specific description of this detach function goes here.
+ * @el {HtmlElement} specify the parent DOM element
  */
 
 class EmailInput {
@@ -14,6 +13,9 @@ class EmailInput {
     constructor(el: HTMLElement, emails: string[]) {
         this.el = el;
     	this.emails = emails;
+    }
+    get getEmails() {
+        return this.emails;
     }
     onDelete(email: string) {
         const idx = this.emails.indexOf(email);
@@ -45,8 +47,19 @@ class EmailInput {
             this.onCreate(value.replace(/\,|-/g, ''));
         }
     }
+    replaceAll() {
+        this.emails = [];
+    }
     render(): HTMLElement {
+        // clean and reset the rendered HTML
         this.el.innerHTML = '';
+
+        // create and attach the text input to the email list view
+        const elTextInput = createElement('input', {
+            name: 'email',
+            type: 'text',
+            placeholder: 'enter new email'
+        });
 
         const emailsContainer = createElement('div');
 
@@ -58,13 +71,6 @@ class EmailInput {
             tagEl.addEventListener('click', () => this.onDelete(email));
 
             emailsContainer.appendChild(createElement('li', {}, tagEl));
-        });
-
-        // create and attach the text input to the email list view
-        const elTextInput = createElement('input', {
-            name: 'email',
-            type: 'text',
-            placeholder: 'enter new email'
         });
 
         // add event listener on blur event to add new email

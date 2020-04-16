@@ -7,7 +7,11 @@ const App = () => {
   let el = createElement('div');
 
   // initialize the email input component
-  const emailInputInstance: any = new emailInput(createElement('form', {class: 'emails'}), []);
+  const emailInputInstance: any = new emailInput(createElement('div', {class: 'emails'}), []);
+
+  emailInputInstance.onChange((emails: string[]) => {
+    console.log('sah');
+  });
 
   // write header element to DOM
   el.appendChild(createElement('div', {}, 'Hello world!'));
