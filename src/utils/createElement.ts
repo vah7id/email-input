@@ -5,7 +5,7 @@
  * @param {HTMLElement} children  children DOM element
  */
 
-const createElement = (type: string, attributes?: { [key: string]: string; }, ...children: any): HTMLElement => {
+const createElement = (type: string, attributes?: { [key: string]: string; }, ...children: any): any => {
   const el = document.createElement(type);
 
   for (let attr in attributes) {
