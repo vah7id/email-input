@@ -1,5 +1,13 @@
 import createElement from '../utils/createElement';
 
+/**
+ * Email input class component
+ *
+ * @emails {Array} list of initial (default) emails
+ * @el {Drupal~behaviorDetach} detach
+ *   Specific description of this detach function goes here.
+ */
+
 class EmailInput {
     emails: string[];
     el: HTMLElement;
@@ -20,13 +28,30 @@ class EmailInput {
             this.render();
         }
     }
+    onBlur(inputEl: HTMLInputElement, email: string) {
+        // if multiple emails pasted split them first
+        if(email.indexOf(',') > -1) {
+            inputEl.value = '';
+            email.split(',').forEach((item: string) => this.onCreate(item));
+            return;
+        }
+        this.onCreate(email);
+    }
+    onKeyup(inputEl: HTMLInputElement, e: any) {
+        e.preventDefault();
+        if (e.keyCode === 13 || e.key === ',') {
+            const value = e.currentTarget.value.trim();
+            inputEl.value = '';
+            this.onCreate(value.replace(/\,|-/g, ''));
+        }
+    }
     render(): HTMLElement {
         this.el.innerHTML = '';
 
         const emailsContainer = createElement('div');
 
         // map all the emails and create the email (item) element
-        this.emails.map((email: string) => {
+        this.emails.forEach((email: string) => {
             const tagEl = createElement('span', {}, `${email} x`);
 
             // bind click event to delete email
@@ -42,24 +67,11 @@ class EmailInput {
             placeholder: 'enter new email'
         });
 
-        // add new email on blue event
-        elTextInput.addEventListener('blur', () => {
-            const value = elTextInput.value.trim();
-            // if multiple emails pasted
-            if(value.indexOf(',') > -1) {
-                this.onCreate(value.split(','))
-            }
-            this.onCreate(value);
-        });
+        // add event listener on blur event to add new email
+        elTextInput.addEventListener('blur', () => this.onBlur(elTextInput, elTextInput.value.trim()));
 
         // add new email on type enter and cama char
-        elTextInput.addEventListener('keyup', ((e: any) => {
-            e.preventDefault();
-            if (e.keyCode === 13 || e.key === ',') {
-                const value = e.currentTarget.value.trim();
-                this.onCreate(value);
-            }
-        }));
+        elTextInput.addEventListener('keyup', ((e: any) => this.onKeyup(elTextInput, e)));
 
         emailsContainer.appendChild(elTextInput);
 
