@@ -7,12 +7,25 @@ import createElement from '../utils/createElement';
  * @el {HtmlElement} specify the parent DOM element
  */
 
-class EmailInput {
-    emails: string[];
+interface Options {
+    observer(emails: string[]): void;
+}
+
+export interface emailInputProps{
     el: HTMLElement;
-    constructor(el: HTMLElement, emails: string[]) {
+    emails: string[];
+    options: Options;
+    render(): void;
+}
+
+class EmailInput {
+    el: HTMLElement;
+    emails: string[];
+    options: Options;
+    constructor(el: HTMLElement, emails: string[], options: Options) {
         this.el = el;
     	this.emails = emails;
+    	this.options = options;
     }
     get getEmails() {
         return this.emails;
@@ -22,12 +35,14 @@ class EmailInput {
         if(idx > -1) {
             this.emails.splice(idx, 1);
             this.render();
+            this.options.observer(this.emails);
         }
     }
     onCreate(email: string) {
         if(this.emails.indexOf(email) < 0 && email.length > 0) {
             this.emails.push(email);
             this.render();
+            this.options.observer(this.emails);
         }
     }
     onBlur(inputEl: HTMLInputElement, email: string) {
@@ -41,6 +56,7 @@ class EmailInput {
     }
     onKeyup(inputEl: HTMLInputElement, e: any) {
         e.preventDefault();
+        // add the new email on enter and ',' keys
         if (e.keyCode === 13 || e.key === ',') {
             const value = e.currentTarget.value.trim();
             inputEl.value = '';

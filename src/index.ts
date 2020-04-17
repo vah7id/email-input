@@ -1,17 +1,18 @@
 import createElement from './utils/createElement';
-import emailInput from './components/email-input';
+import emailInput, {emailInputProps} from './components/email-input';
 import emailActions from './components/email-actions';
 
 const App = () => {
   // root DOM element
-  let el = createElement('div');
+  let el = createElement('div', {id: 'root'});
+
+  // watch on emails list change in emailInput component
+  const emailObserver = (emails: string[]) => {
+      console.log(emails)
+  }
 
   // initialize the email input component
-  const emailInputInstance: any = new emailInput(createElement('div', {class: 'emails'}), []);
-
-  emailInputInstance.onChange((emails: string[]) => {
-    console.log('sah');
-  });
+  const emailInputInstance: emailInputProps = new emailInput(createElement('div', {class: 'emails'}), [], {observer: emailObserver});
 
   // write header element to DOM
   el.appendChild(createElement('div', {}, 'Hello world!'));
