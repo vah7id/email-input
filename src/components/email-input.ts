@@ -1,4 +1,5 @@
 import createElement from '../utils/createElement';
+import { validateEmail } from "../utils/validation";
 
 /**
  * Email input class component
@@ -15,7 +16,7 @@ export interface emailInputProps{
     el: HTMLElement;
     emails: string[];
     options: Options;
-    render(): void;
+    render(): HTMLElement;
 }
 
 class EmailInput {
@@ -74,20 +75,23 @@ class EmailInput {
         const elTextInput = createElement('input', {
             name: 'email',
             type: 'text',
-            placeholder: 'enter new email'
+            placeholder: 'add more people...'
         });
 
-        const emailsContainer = createElement('div');
+        const emailsContainer = createElement('ul');
 
         // map all the emails and create the email (item) element
         this.emails.forEach((email: string) => {
-            const tagEl = createElement('span', {}, `${email} x`);
+            const isValid = validateEmail(email);
+            const tagEl = createElement('span', {}, `${isValid ? email : 'invalid email'} x`);
 
             // bind click event to delete email
             tagEl.addEventListener('click', () => this.onDelete(email));
 
-            emailsContainer.appendChild(createElement('li', {}, tagEl));
+            emailsContainer.appendChild(createElement('li', {'data-valid': isValid.toString()}, tagEl));
         });
+
+        emailsContainer.appendChild(createElement('li', {class: 'enter-email-input'}, elTextInput));
 
         // add event listener on blur event to add new email
         elTextInput.addEventListener('blur', () => this.onBlur(elTextInput, elTextInput.value.trim()));
@@ -95,13 +99,10 @@ class EmailInput {
         // add new email on type enter and cama char
         elTextInput.addEventListener('keyup', ((e: any) => this.onKeyup(elTextInput, e)));
 
-        emailsContainer.appendChild(elTextInput);
-
         // append the emails list elements to the list container
-        const elInput = createElement('ul', {class: 'list'} , emailsContainer);
+        const elInput = createElement('div', {class: 'list'} , emailsContainer);
 
         this.el.appendChild(elInput);
-        this.el.appendChild(elTextInput);
         return this.el;
     }
 }

@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,500&display=swap');
+
+$background-color: #F8F8F7;
+$card-max-width: 500px;
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+}
+
+.Card {
+  max-width: $card-max-width;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  background: $background-color;
+  margin: 0 auto;
+
+  h2 {
+    padding: 32px 50px 0 48px;
+    text-align: left;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 27px;
+    margin: 32px 0 0 0;
+  }
+
+  .emails {
+    margin: 24px 50px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    float: left;
+
+    .list {
+      width: 100%;
+
+      ul {
+        background: white;
+        border: 1px solid #C3C2CF;
+        box-sizing: border-box;
+        border-radius: 4px;
+        list-style: none;
+        padding: 8px 7px 36px 7px;
+        margin: 0;
+        width: 100%;
+        float: left;
+
+        .enter-email-input {
+          background: none;
+
+          input {
+            font-weight: 100;
+            font-family: 'Open Sans', sans-serif;
+            outline: none;
+            border: none;
+            font-size: 14px;
+          }
+        }
+
+        li {
+          margin: 2px 4px;
+          flex: 1 1;
+          padding: 4px 10px;
+          float: left;
+          background: rgba(102, 153, 255, 0.2);
+          border-radius: 100px;
+          font-size: 14px;
+
+          &[data-valid="false"] {
+            background: none;
+            border-radius: 0;
+            padding: 4px 0px;
+            border-bottom: 1px dashed #D92929;
+          }
+
+          span {
+            font-weight: 500;
+            color: #050038;
+          }
+        }
+      }
+    }
+  }
+
+  .email-actions {
+    padding: 32px 48px;
+    background: white;
+    display: flex;
+    margin-top: 120px;
+    border-radius: 0 0 8px 8px;
+    position: relative;
+
+    button {
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      float: left;
+      background: #4262FF;
+      color: white;
+      border-radius: 6px;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 100;
+      padding: 12px 16px;
+      line-height: 14px;
+
+      &:first-child {
+        margin-right: 16px;
+      }
+    }
+  }
+}
